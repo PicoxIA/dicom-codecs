@@ -1,4 +1,4 @@
-const { isNode, isBrowser } = require("browser-or-node");
+const { isNode, isBrowser, isWebWorker } = require("browser-or-node");
 /**
  * Wrapper for process timer to capture process timestamp.
  *
@@ -29,6 +29,13 @@ function processTimer(processName, loggerInstance) {
         return [Math.abs(window.performance.now() - previousTime[0]), 0];
       } else {
         return [window.performance.now(), 0];
+      }
+    }
+    if (isWebWorker) {
+      if (previousTime) {
+        return [Math.abs(performance.now() - previousTime[0]), 0];
+      } else {
+        return [performance.now(), 0];
       }
     }
 
